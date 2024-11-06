@@ -37,16 +37,20 @@ class AudioController(tk.Tk): # Object that provides controls of the audio
         self.update_queue = Queue()
         
     def toggle_play(self):
+        """Toggle play/pause state and update button icon."""
         self.is_playing = not self.is_playing
         self.play_button.config(text="⏸️" if self.is_playing else "▶️") # Controls for play and pause
     
     def seek(self, event):
+        """Handle user seek action on the progress bar."""
         self.seek_position = self.progress.get()
     
     def update_progress(self, position):
+        """Receive updated position from audio stream and place in queue."""
         self.update_queue.put(position)
     
     def process_events(self):
+        """Process events, handling updates from audio and GUI actions."""
         while not self.update_queue.empty():
             try:
                 position = self.update_queue.get_nowait()
