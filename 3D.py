@@ -92,7 +92,7 @@ class Particle: # This object defines a particle in the 3D space.
             self.target_fft = 0  # When paused, gradually return to base position
         self.smooth_transition()
 
-class MusicVisualizer:
+class MusicVisualizer: # THis handles the main visualization and audio playback
     def __init__(self, music_file):
         pygame.init()
         self.display = (1200, 800)
