@@ -14,7 +14,7 @@ import tkinter as tk
 from tkinter import ttk
 from queue import Queue
 
-class AudioController(tk.Tk):
+class AudioController(tk.Tk): # Object that provides controls of the audio
     def __init__(self, audio_length):
         super().__init__()
         
@@ -37,16 +37,20 @@ class AudioController(tk.Tk):
         self.update_queue = Queue()
         
     def toggle_play(self):
+        """Toggle play/pause state and update button icon."""
         self.is_playing = not self.is_playing
-        self.play_button.config(text="⏸️" if self.is_playing else "▶️")
+        self.play_button.config(text="⏸️" if self.is_playing else "▶️") # Controls for play and pause
     
     def seek(self, event):
+        """Handle user seek action on the progress bar."""
         self.seek_position = self.progress.get()
     
     def update_progress(self, position):
+        """Receive updated position from audio stream and place in queue."""
         self.update_queue.put(position)
     
     def process_events(self):
+        """Process events, handling updates from audio and GUI actions."""
         while not self.update_queue.empty():
             try:
                 position = self.update_queue.get_nowait()
@@ -59,8 +63,9 @@ class AudioController(tk.Tk):
         self.update_idletasks()
         self.update()
 
-class Particle:
+class Particle: # This object defines a particle in the 3D space.
     def __init__(self, phi, theta, radius):
+        """Initialize particle with spherical coordinates."""
         self.base_phi = phi
         self.base_theta = theta
         self.base_radius = radius
@@ -71,24 +76,26 @@ class Particle:
         self.update_position()
 
     def update_position(self):
+        """Convert spherical coordinates to Cartesian coordinates for OpenGL rendering."""
         self.x = self.radius * math.sin(self.base_theta) * math.cos(self.base_phi)
         self.y = self.radius * math.sin(self.base_theta) * math.sin(self.base_phi)
         self.z = self.radius * math.cos(self.base_theta)
 
     def smooth_transition(self):
-        # Smoothly interpolate between current and target FFT values
+        """Smoothly transition between current and target FFT values."""
         self.current_fft += (self.target_fft - self.current_fft) * self.smooth_factor
         self.radius = self.base_radius * (1 + 1.0 * self.current_fft)  # Increased scale for more visible effect
         self.update_position()
 
     def apply_fft(self, fft_value, is_playing):
+        """Apply FFT amplitude, transitioning smoothly to new target."""
         if is_playing:
             self.target_fft = fft_value
         else:
             self.target_fft = 0  # When paused, gradually return to base position
         self.smooth_transition()
 
-class MusicVisualizer:
+class MusicVisualizer: # This handles the main visualization and audio playback
     def __init__(self, music_file):
         pygame.init()
         self.display = (1200, 800)
@@ -116,6 +123,7 @@ class MusicVisualizer:
 
     # setting up opengl
     def setup_gl(self):
+        """Set up OpenGL settings and enable lighting for 3D rendering."""
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
@@ -134,6 +142,7 @@ class MusicVisualizer:
 
     # Loading an audio file with a `soundfile` that's passed as a command line argument
     def setup_audio(self, music_file):
+        """Load audio file, handle mono conversion, and start audio playback thread."""
         try:
             self.audio_data, self.sample_rate = sf.read(music_file)
             if len(self.audio_data.shape) > 1:
@@ -150,6 +159,7 @@ class MusicVisualizer:
         self.audio_thread.start()
 
     def play_audio(self):
+        """Main audio playback function that handles audio state and seeks."""
         try:
             with sd.OutputStream(channels=1, callback=self.audio_callback,
                                samplerate=self.sample_rate):
