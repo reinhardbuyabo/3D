@@ -83,7 +83,6 @@ class Particle: # This object defines a particle in the 3D space.
 
     def smooth_transition(self):
         """Smoothly transition between current and target FFT values."""
-        # Smoothly interpolate between current and target FFT values
         self.current_fft += (self.target_fft - self.current_fft) * self.smooth_factor
         self.radius = self.base_radius * (1 + 1.0 * self.current_fft)  # Increased scale for more visible effect
         self.update_position()
