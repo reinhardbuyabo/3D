@@ -65,6 +65,7 @@ class AudioController(tk.Tk): # Object that provides controls of the audio
 
 class Particle: # This object defines a particle in the 3D space.
     def __init__(self, phi, theta, radius):
+        """Initialize particle with spherical coordinates."""
         self.base_phi = phi
         self.base_theta = theta
         self.base_radius = radius
@@ -75,11 +76,13 @@ class Particle: # This object defines a particle in the 3D space.
         self.update_position()
 
     def update_position(self):
+        """Convert spherical coordinates to Cartesian coordinates for OpenGL rendering."""
         self.x = self.radius * math.sin(self.base_theta) * math.cos(self.base_phi)
         self.y = self.radius * math.sin(self.base_theta) * math.sin(self.base_phi)
         self.z = self.radius * math.cos(self.base_theta)
 
     def smooth_transition(self):
+        """Smoothly transition between current and target FFT values."""
         # Smoothly interpolate between current and target FFT values
         self.current_fft += (self.target_fft - self.current_fft) * self.smooth_factor
         self.radius = self.base_radius * (1 + 1.0 * self.current_fft)  # Increased scale for more visible effect
