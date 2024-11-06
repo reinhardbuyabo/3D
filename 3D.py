@@ -89,13 +89,14 @@ class Particle: # This object defines a particle in the 3D space.
         self.update_position()
 
     def apply_fft(self, fft_value, is_playing):
+        """Apply FFT amplitude, transitioning smoothly to new target."""
         if is_playing:
             self.target_fft = fft_value
         else:
             self.target_fft = 0  # When paused, gradually return to base position
         self.smooth_transition()
 
-class MusicVisualizer: # THis handles the main visualization and audio playback
+class MusicVisualizer: # This handles the main visualization and audio playback
     def __init__(self, music_file):
         pygame.init()
         self.display = (1200, 800)
@@ -122,6 +123,7 @@ class MusicVisualizer: # THis handles the main visualization and audio playback
         self.controller = AudioController(self.audio_length)
 
     def setup_gl(self):
+        """Set up OpenGL settings and enable lighting for 3D rendering."""
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
@@ -139,6 +141,7 @@ class MusicVisualizer: # THis handles the main visualization and audio playback
         glTranslatef(0.0, 0.0, -15)
 
     def setup_audio(self, music_file):
+        """Load audio file, handle mono conversion, and start audio playback thread."""
         try:
             self.audio_data, self.sample_rate = sf.read(music_file)
             if len(self.audio_data.shape) > 1:
@@ -155,6 +158,7 @@ class MusicVisualizer: # THis handles the main visualization and audio playback
         self.audio_thread.start()
 
     def play_audio(self):
+        """Main audio playback function that handles audio state and seeks."""
         try:
             with sd.OutputStream(channels=1, callback=self.audio_callback,
                                samplerate=self.sample_rate):
