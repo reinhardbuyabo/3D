@@ -14,7 +14,7 @@ import tkinter as tk
 from tkinter import ttk
 from queue import Queue
 
-class AudioController(tk.Tk):
+class AudioController(tk.Tk): # Object that provides controls of the audio
     def __init__(self, audio_length):
         super().__init__()
         
