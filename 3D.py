@@ -38,7 +38,7 @@ class AudioController(tk.Tk):
         
     def toggle_play(self):
         self.is_playing = not self.is_playing
-        self.play_button.config(text="⏸️" if self.is_playing else "▶️")
+        self.play_button.config(text="⏸️" if self.is_playing else "▶️") # Controls for play and pause
     
     def seek(self, event):
         self.seek_position = self.progress.get()
