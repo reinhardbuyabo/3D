@@ -25,10 +25,10 @@ This project is an interactive 3D audio-visual experience where a large sphere, 
     ```
 
 ## Usage
-1. Run the script:
+1. Run the script: The music.wav file can be any audio file in .wav format:
 
     ```bash
-    python 3D.py
+    python 3D.py music.wav
     ```
 
 2. Upon starting, a GUI window will appear for controlling the audio playback. You can pause, play, and seek through the audio file.
