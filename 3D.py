@@ -59,7 +59,7 @@ class AudioController(tk.Tk): # Object that provides controls of the audio
         self.update_idletasks()
         self.update()
 
-class Particle:
+class Particle: # This object defines a particle in the 3D space.
     def __init__(self, phi, theta, radius):
         self.base_phi = phi
         self.base_theta = theta
