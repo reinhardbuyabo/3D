@@ -14,20 +14,27 @@ import tkinter as tk
 from tkinter import ttk
 from queue import Queue
 
+"""
+Tkinter-based Audio Controller for handling playback controls and progress bar
+"""
 class AudioController(tk.Tk):
     def __init__(self, audio_length):
         super().__init__()
-        
+
+        # Set up basic window properties
         self.title("Audio Controls")
         self.geometry("400x100")
-        
+
+        # Control frame to hold playback buttons
         control_frame = ttk.Frame(self)
         control_frame.pack(pady=10)
-        
+
+        # Playback state and button
         self.is_playing = True
         self.play_button = ttk.Button(control_frame, text="⏸️", command=self.toggle_play)
         self.play_button.pack(side=tk.LEFT, padx=5)
-        
+
+        # Progress bar setup
         self.progress = ttk.Scale(self, from_=0, to=audio_length, orient=tk.HORIZONTAL)
         self.progress.pack(fill=tk.X, padx=10)
         self.progress.bind("<ButtonRelease-1>", self.seek)
