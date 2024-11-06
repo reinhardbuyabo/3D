@@ -114,6 +114,7 @@ class MusicVisualizer:
         self.audio_length = len(self.audio_data) / self.sample_rate
         self.controller = AudioController(self.audio_length)
 
+    # setting up opengl
     def setup_gl(self):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
@@ -131,6 +132,7 @@ class MusicVisualizer:
         glMatrixMode(GL_MODELVIEW)
         glTranslatef(0.0, 0.0, -15)
 
+    # Loading an audio file with a `soundfile` that's passed as a command line argument
     def setup_audio(self, music_file):
         try:
             self.audio_data, self.sample_rate = sf.read(music_file)
@@ -166,6 +168,7 @@ class MusicVisualizer:
         except Exception as e:
             print(f"Error playing audio: {e}")
 
+    # computes FFT(Fast Fourier Transform) values to create a dynamic visual
     def audio_callback(self, outdata, frames, time, status):
         if status:
             print(status)
@@ -203,6 +206,7 @@ class MusicVisualizer:
             outdata[:] = data.reshape(-1, 1)
 
     def create_particles(self):
+        # Each particle has a base position and radius
         particles = []
         phi_count = int(np.sqrt(self.particle_count))
         theta_count = phi_count * 2
@@ -215,6 +219,7 @@ class MusicVisualizer:
 
         return particles
 
+    # Each particle's position and color is dynamically updated based on FFT data, creating a vibrant effect as they rotate in a 3D space
     def draw_particle(self, particle):
         glPushMatrix()
         glTranslatef(particle.x, particle.y, particle.z)
@@ -228,7 +233,7 @@ class MusicVisualizer:
         glPopMatrix()
 
     def draw(self):
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # clearing the buffer
         glLoadIdentity()
         glTranslatef(0.0, 0.0, -15)
         
@@ -260,7 +265,7 @@ class MusicVisualizer:
             clock.tick(60)
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 2: # we expect a command line argument
         print("Usage: python script.py <music_file>")
         return
         
